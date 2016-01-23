@@ -4,6 +4,7 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
 
 from scraptop.models import db_connect, create_tokopedia_table, ProductTokopedia
@@ -23,6 +24,10 @@ class ScraptopPipeline(object):
         try:
             session.add(product)
             session.commit()
+
+        except IntegrityError:
+            print "Produk ID sudah ada"
+
         except:
             session.rollback()
             raise
