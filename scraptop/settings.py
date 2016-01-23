@@ -14,6 +14,16 @@ BOT_NAME = 'scraptop'
 SPIDER_MODULES = ['scraptop.spiders']
 NEWSPIDER_MODULE = 'scraptop.spiders'
 
+DATABASE = {
+    'drivername': 'postgres',
+    'host': '192.168.59.103',
+    'port': '5432',
+    'username': 'ramdani',
+    'password': 'master88',
+    'database': 'tokopedia_db'
+}
+
+ITEM_PIPELINES = ['scraptop.pipelines.ScraptopPipeline']
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'scraptop (+http://www.yourdomain.com)'

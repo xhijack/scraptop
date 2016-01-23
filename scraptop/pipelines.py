@@ -4,8 +4,29 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
+from sqlalchemy.orm import sessionmaker
+
+from scraptop.models import db_connect, create_tokopedia_table, ProductTokopedia
 
 
 class ScraptopPipeline(object):
+
+    def __init__(self):
+        engine = db_connect()
+        create_tokopedia_table(engine)
+        self.Session = sessionmaker(bind=engine)
+
     def process_item(self, item, spider):
+        session = self.Session()
+        product = ProductTokopedia(**item)
+
+        try:
+            session.add(product)
+            session.commit()
+        except:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
         return item

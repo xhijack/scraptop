@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import scrapy
 import json
+
+from scraptop.helpers import string2integer
 from scraptop.items import Product
 
 DOMAIN = 'ace.tokopedia.com'
@@ -28,7 +30,7 @@ class TokopediaSpider(scrapy.Spider):
             product = Product()
             product['product_id'] = item['id']
             product['title'] = item['name']
-            product['price'] = item['wholesale_price'][0]['price']
+            product['price'] = string2integer(item['wholesale_price'][0]['price'])
             product['seller'] = item['shop']['name']
             product['link_url'] = item['uri']
             product['location'] = item['shop']['location']
