@@ -15,4 +15,5 @@ class Product(Item):
     seller = Field()
     link_url = Field()
     location = Field()
-    image_url = Field()
+    image_urls = Field()
+    images = Field()

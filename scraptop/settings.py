@@ -23,10 +23,17 @@ DATABASE = {
     'database': 'tokopedia_db'
 }
 
-ITEM_PIPELINES = ['scraptop.pipelines.ScraptopPipeline']
+# ITEM_PIPELINES = ['scraptop.pipelines.ImagePipeline']
+ITEM_PIPELINES = {
+  'scrapy.pipelines.images.ImagesPipeline': 1
+}
+IMAGES_STORE = 'tmp/images/'
+
+# ITEM_PIPELINES = {'scrapy.pipelines.images.ImagesPipeline': 1}
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'scraptop (+http://www.yourdomain.com)'
+USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'
+
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS=32
@@ -53,15 +60,15 @@ ITEM_PIPELINES = ['scraptop.pipelines.ScraptopPipeline']
 
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
+# SPIDER_MIDDLEWARES = {
 #    'scraptop.middlewares.MyCustomSpiderMiddleware': 543,
-#}
+# }
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
+# DOWNLOADER_MIDDLEWARES = {
 #    'scraptop.middlewares.MyCustomDownloaderMiddleware': 543,
-#}
+# }
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
