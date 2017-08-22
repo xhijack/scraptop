@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Tokopedia Scraper</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+    <link rel="stylesheet" href="../static/css/normalize.css">
+    <link rel="stylesheet" href="../static/css/skeleton.css">
+
+    <script src="https://code.jquery.com/jquery-git.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="images/favicon.png">
+
+</head>
+<body>
+<style>
+    .container{
+        max-width: 100% !important;
+        width: 100%;
+    }
+</style>
+<script type="text/javascript">
+
+    $(function() {
+
+
+    $("#jsGrid").jsGrid({
+        height: "auto",
+        width: "100%",
+
+        sorting: true,
+        paging: true,
+        autoload: true,
+
+        controller: {
+            loadData: function() {
+                var d = $.Deferred();
+
+                $.ajax({
+                    url: "/list",
+                    dataType: "json"
+                }).done(function(response) {
+                    console.log(response);
+                    d.resolve(response);
+                });
+
+                return d.promise();
+            }
+        },
+
+        fields: [
+            { name: "title", type: "text" },
+            { name: "weight", type: "number", width:"50" },
+            { name: "categories", type: "text" ,width:"150" },
+            { name: "seller", type: "text" },
+            { name: "link_url", type: "text", width:"50" },
+            { name: "location", type: "text", width:"100"  },
+            { name: "price", type: "number", width: 50,
+                itemTemplate: function(value) {
+                    return "Rp." + value.toFixed(2); }
+            },
+            { name: "images", type: "text" },
+        ]
+    });
+
+});
+</script>
+
+<!-- Primary Page Layout
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<div class="container">
+    <div class="row" style="margin: 40px 40px 40px 40px ">
+            <a href="/" class="button">Configuration</a>
+
+            <h3>Scrape Tokopedia</h3>
+            <a id="btn_download" class="button button-primary" href="../static/result/result.csv">Download CSV</a>
+            <div id="jsGrid"></div>
+    </div>
+</div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+
+</body>
+</html>

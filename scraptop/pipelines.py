@@ -4,41 +4,41 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
+from __future__ import unicode_literals
+
+import json
+from copy import deepcopy
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import sessionmaker
 
-from scraptop.models import db_connect, create_tokopedia_table, ProductTokopedia
+from scraptop.database import db_session
+from scraptop.models import db_connect, ProductTokopedia
 
-class ImagePipeline(object):
-    # def __init__(self):
+
+
+class ScraptopPipeline(object):
+
+    def __init__(self):
+        self.Session = db_session
 
     def process_item(self, item, spider):
+        session = self.Session()
+        data = deepcopy(item)
+        del data['image_urls']
+        data['images'] = json.dumps(data['images'])
+        product = ProductTokopedia(**data)
+        # import pdb
+        # pdb.set_trace()
+        try:
+            session.add(product)
+            session.commit()
+
+        except IntegrityError:
+            print("Produk ID sudah ada")
+
+        except:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
         return item
-# class ScraptopPipeline(object):
-#
-#     def __init__(self):
-#         import pdb
-#         pdb.set_trace()
-#         engine = db_connect()
-#
-#         create_tokopedia_table(engine)
-#         self.Session = sessionmaker(bind=engine)
-#
-#     def process_item(self, item, spider):
-#         session = self.Session()
-#         product = ProductTokopedia(**item)
-#
-#         try:
-#             session.add(product)
-#             session.commit()
-#
-#         except IntegrityError:
-#             print "Produk ID sudah ada"
-#
-#         except:
-#             session.rollback()
-#             raise
-#         finally:
-#             session.close()
-#
-#         return item

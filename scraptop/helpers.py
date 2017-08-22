@@ -1,3 +1,3 @@
 
 def string2integer(price):
-    return filter(lambda x: x.isdigit(), price)
+    return int("".join(list(filter(lambda x: x.isdigit(), price))))

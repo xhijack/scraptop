@@ -3,7 +3,7 @@
 created by xhijack@gmail.com
 updated: August 5 2017
 """
-
+from __future__ import unicode_literals
 import scrapy
 import json
 
@@ -19,6 +19,7 @@ SEARCH_URL = 'https://{domain}/search/v2.6/product?shop_id={shop_id}&ob=11&rows=
 CATEGORY_URL = 'https://ace.tokopedia.com/search/product/v3?full_domain=www.tokopedia.com&' \
                'scheme=https&device=desktop&source=directory&page=1&image_size=200&rows=75&sc={sc}' \
                '&start={start}&ob=23'
+
 
 class TokopediaSpider(scrapy.Spider):
     name = "tokopedia"
@@ -54,11 +55,30 @@ class TokopediaSpider(scrapy.Spider):
             product['seller'] = item['shop']['name']
             product['link_url'] = item['uri']
             product['location'] = item['shop']['location']
-            product['image_urls'] = [item['image_uri_700']]
-            yield product
+            # product['image_urls'] = [item['image_uri_700']]
+
+            request = Request(product['link_url'], callback=self.parse_detail)
+            request.meta['product'] = product
+            yield request
 
         for i in range(1, total_pages + 1):
             yield Request(SEARCH_URL.format(domain=DOMAIN, start=i*20, shop_id=self.shop_id), callback=self.parse_by_brand)
+
+    def parse_detail(self, response):
+        weight = response.xpath('//div[@class="tab-content product-content-container "]/div/div/div/dl/dd/text()').extract()[2]
+        image_urls = response.xpath('//div[@class="jcarousel product-imagethumb-alt"]/ul/li/a/@href').extract()
+
+        resps = response.xpath("//div[@id='breadcrumb-container']/ul/li/h2")
+        categories = []
+        for resp in resps:
+            temp = resp.xpath('a/text()').extract()
+            if temp != []: categories.append(temp[0].strip())
+
+        response.meta['product']['weight'] = string2integer(weight)
+        response.meta['product']['categories'] = ",".join(categories)
+        response.meta['product']['image_urls'] = image_urls
+
+        yield response.meta['product']
 
     def parse_by_categories(self, response):
         items = json.loads(response.body)

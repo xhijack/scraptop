@@ -15,19 +15,16 @@ SPIDER_MODULES = ['scraptop.spiders']
 NEWSPIDER_MODULE = 'scraptop.spiders'
 
 DATABASE = {
-    'drivername': 'postgres',
-    'host': '192.168.59.103',
-    'port': '5432',
-    'username': 'ramdani',
-    'password': 'master88',
-    'database': 'tokopedia_db'
+    'drivername': 'sqlite',
+     'database': 'scraper.sqlite'
 }
 
 # ITEM_PIPELINES = ['scraptop.pipelines.ImagePipeline']
 ITEM_PIPELINES = {
-  'scrapy.pipelines.images.ImagesPipeline': 1
+    'scraptop.pipelines.ScraptopPipeline': 300,
+    'scrapy.pipelines.images.ImagesPipeline': 1
 }
-IMAGES_STORE = 'tmp/images/'
+IMAGES_STORE = 'static/result/images/'
 
 # ITEM_PIPELINES = {'scrapy.pipelines.images.ImagesPipeline': 1}
 
@@ -78,9 +75,6 @@ USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'scraptop.pipelines.SomePipeline': 300,
-#}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html

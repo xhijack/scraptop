@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Tokopedia Scraper</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <script src="https://code.jquery.com/jquery-git.min.js"></script>
+
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="../static/css/normalize.css">
+    <link rel="stylesheet" href="../static/css/skeleton.css">
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="images/favicon.png">
+
+</head>
+<body>
+<script>
+    $(function(){
+        $("#btn_automate").click(function(){
+            $.ajax({
+                url: '/automate',
+                data: {'data':'kasep'}
+            })
+        });
+    });
+</script>
+
+<!-- Primary Page Layout
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<div class="container">
+    <div class="row" style="margin-top:40px;">
+            <a href="/items" class="button">Items</a>
+            <h3>Scrape Tokopedia</h3>
+            <form action="scrape" method="post">
+                <div class="row">
+                    <div class="six columns">
+                        <label for="id_">ID</label>
+                        <input class="u-full-width" value="{{ shop_id }}" name="brand_id" type="number" placeholder="shop_id or brand_id" id="id_">
+                    </div>
+                    <div class="six columns">
+                        <label for="exampleRecipientInput">Scrape By</label>
+                        <select class="u-full-width" name="by" id="exampleRecipientInput">
+                            <option value="brand">Brand</option>
+                            <option value="category">Category</option>
+                        </select>
+                    </div>
+                </div>
+                <input class="button-primary" type="submit" value="Save">
+            </form>
+            <p>
+                <ol>
+                    <li>Inputkan Shop ID bukan Shopname</li>
+                    <li>Shop ID di dapatkan dengan cara ketik https://tokopedia.com/{nama_toko} . Kemudian klik kanan dan pilih view source </li>
+                    <li>Cari <i>page_shop_id</i> lalu inputkan Shop ID </li>
+                    <li>Jalankan scraper.exe dan tunggu sampai selesai </li>
+                    <li>Untuk hasilnya bisa dilihat di halaman items </li>
+                </ol>
+            </p>
+    </div>
+</div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
