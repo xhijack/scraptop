@@ -27,7 +27,7 @@ def main(filename='static/result/result.csv', format='csv', shop_id=None, by=Non
 
     @defer.inlineCallbacks
     def crawl():
-        yield runner.crawl(TokopediaSpider,shop_id=scraper.shop_id, by="brand")
+        yield runner.crawl(TokopediaSpider, id_=scraper.shop_id, by="brand")
         reactor.stop()
 
     crawl()
