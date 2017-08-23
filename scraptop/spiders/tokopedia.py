@@ -26,15 +26,16 @@ class TokopediaSpider(scrapy.Spider):
     allowed_domains = ["tokopedia.com"]
     # start_urls = [SEARCH_URL.format(domain=DOMAIN, shop_id=24, start=0)]
 
-    def __init__(self, shop_id=None, by=None, category_id=None):
+    def __init__(self, id_=None, by=None):
         self.by = by
-        self.category_id = category_id
-        self.shop_id = shop_id
+        self.id_ = id_
+        # self.category_id = category_id
+        # self.shop_id = shop_id
 
         if self.by == 'brand':
-            self.start_urls = (SEARCH_URL.format(domain=DOMAIN, shop_id=shop_id, start=0),)
+            self.start_urls = (SEARCH_URL.format(domain=DOMAIN, shop_id=id_, start=0),)
         elif self.by == 'category':
-            self.start_urls = (CATEGORY_URL.format(sc=self.category_id, start=0),)
+            self.start_urls = (CATEGORY_URL.format(sc=id_, start=0),)
 
     def parse(self, response):
         if self.by == 'brand':
@@ -62,7 +63,7 @@ class TokopediaSpider(scrapy.Spider):
             yield request
 
         for i in range(1, total_pages + 1):
-            yield Request(SEARCH_URL.format(domain=DOMAIN, start=i*20, shop_id=self.shop_id), callback=self.parse_by_brand)
+            yield Request(SEARCH_URL.format(domain=DOMAIN, start=i*20, shop_id=self.id_), callback=self.parse_by_brand)
 
     def parse_detail(self, response):
         weight = response.xpath('//div[@class="tab-content product-content-container "]/div/div/div/dl/dd/text()').extract()[2]
@@ -97,7 +98,7 @@ class TokopediaSpider(scrapy.Spider):
             yield product
 
         for i in range(1, total_pages + 1):
-            yield Request(CATEGORY_URL.format(start=i * 80, sc=self.category_id), callback=self.parse_by_categories)
+            yield Request(CATEGORY_URL.format(start=i * 80, sc=self.id_), callback=self.parse_by_categories)
 
 
 
